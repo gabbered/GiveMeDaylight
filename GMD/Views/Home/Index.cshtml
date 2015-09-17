@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@Html.Hidden("SendCommandURL", @Url.Action("SendCommand", "Home"), new { id = "SendCommandURL" })
+@Html.Label("Test:")
+@Html.TextBox("auth", null, new {@id="authId" })<br />
+<input type="button" id="setDayTime" value="Skip Night" class="skip" />
+<input type="button" id="setNightTime" value="Skip Day" class="skip" />
+<br /><br />
+@Html.TextArea("responseCenter", new { @id  = "svrResponse", style="width:600px;height:200px;" })
+
+<script>
+    $('.skip').click(function () {
+        debugger;
+        $.ajax({
+            url: $("#SendCommandURL").val(),
+            data: { command: this.id, auth: $('#authId').val()},
+            success: function (data) {
+                debugger;
+                $('#svrResponse').append(data);
+            },
+            error: function (data)
+            {
+                debugger;
+                //alert(data);
+            }
+        });
+    })
+</script>
