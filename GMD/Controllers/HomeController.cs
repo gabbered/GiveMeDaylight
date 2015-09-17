@@ -21,17 +21,18 @@ namespace GMD.Controllers
             {
                 command = "settimeofday 07:30";
             }
-            else {
+            else
+            {
                 command = "settimeofday 01:00";
             }
 
             StreamReader sr = new StreamReader(Server.MapPath("~/App_Data/config.txt"));
-            string ipAddress="";
-            string port="";
-            string pass="";
+            string ipAddress = "";
+            string port = "";
+            string pass = "";
             string testAuth = "";
 
-            while(!sr.EndOfStream)
+            while (!sr.EndOfStream)
             {
                 var r = sr.ReadLine();
 
@@ -39,12 +40,10 @@ namespace GMD.Controllers
 
                 var val = r.Substring(0, end);
                 
-                
-
-                switch(val)
+                switch (val)
                 {
                     case "ipAddress":
-                        ipAddress = r.Substring(end+1, r.Length - end -1);
+                        ipAddress = r.Substring(end + 1, r.Length - end - 1);
                         break;
                     case "port":
                         port = r.Substring(end + 1, r.Length - end - 1);
@@ -58,32 +57,33 @@ namespace GMD.Controllers
                 }
 
             }
-            
+
             string str_Path = Server.MapPath("~/App_Data/mcrcon.exe");
             string args = "-t -H " + ipAddress + " -P " + port + " -p " + pass + "";
             if (testAuth.ToString() == auth)
             {
-                ProcessStartInfo processStartInfo = new ProcessStartInfo(str_Path, args);
+                var processStartInfo = new ProcessStartInfo(str_Path, args);
 
                 processStartInfo.RedirectStandardInput = true;
                 processStartInfo.RedirectStandardOutput = true;
                 processStartInfo.UseShellExecute = false;
 
-                Process process = Process.Start(processStartInfo);
-
-                if (process != null)
+                using (var process = Process.Start(processStartInfo))
                 {
-                    process.StandardInput.WriteLine(command);
-                    process.StandardInput.Close(); // line added to stop process from hanging on ReadToEnd()
 
-                    string outputString = process.StandardOutput.ReadToEnd();
+                    if (process != null)
+                    {
+                        process.StandardInput.WriteLine(command);
+                        process.StandardInput.Close(); // line added to stop process from hanging on ReadToEnd()
 
-                    process.Close();
+                        string outputString = process.StandardOutput.ReadToEnd();
 
-                    return outputString;
+                        return outputString;
+                    }
                 }
             }
             return string.Empty;
+
         }
 
         public ActionResult Index2()

@@ -2,7 +2,7 @@
     ViewBag.Title = "Index";
 }
 @Html.Hidden("SendCommandURL", @Url.Action("SendCommand", "Home"), new { id = "SendCommandURL" })
-@Html.Label("Test:")
+@Html.Label("Game Password:")
 @Html.TextBox("auth", null, new {@id="authId" })<br />
 <input type="button" id="setDayTime" value="Skip Night" class="skip" />
 <input type="button" id="setNightTime" value="Skip Day" class="skip" />
