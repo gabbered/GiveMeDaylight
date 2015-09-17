@@ -11,17 +11,14 @@
 
 <script>
     $('.skip').click(function () {
-        debugger;
         $.ajax({
             url: $("#SendCommandURL").val(),
             data: { command: this.id, auth: $('#authId').val()},
-            success: function (data) {
-                debugger;
+            success: function (data) {                
                 $('#svrResponse').append(data);
             },
             error: function (data)
             {
-                debugger;
                 //alert(data);
             }
         });
